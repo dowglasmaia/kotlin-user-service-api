@@ -92,6 +92,30 @@ com.dowglasmaia.demouserserviceapi
 ```
 
 ---
+## Why this is **SOLID**
+
+* **SRP (Single Responsibility Principle)**
+  Each class has a single reason to change:
+
+  * DTOs (transport shape), Controller (HTTP concerns),
+  * Use Case (business rule),
+  * Port (contract),
+  * Adapter (JPA details),
+  * Domain (invariants via value objects).
+
+* **DIP (Dependency Inversion Principle)**
+  The use case depends on the **`UserRepository` interface**, not on JPA. Infrastructure depends on the domain/application, never the other way.
+
+* **OCP (Open/Closed Principle)**
+  You can add a new persistence adapter (e.g., Redis, DynamoDB) **without** modifying the use case: implement the `UserRepository` port and wire it.
+
+* **ISP (Interface Segregation Principle)**
+  `UserRepository` exposes only what the use case needs (no leaking of JPA-specific APIs).
+
+* **LSP (Liskov Substitution Principle)**
+  Any adapter that implements `UserRepository` can replace another without breaking the service (same contract, same semantics).
+
+---
 
 ## API Contract
 
@@ -233,31 +257,6 @@ CREATE UNIQUE INDEX IF NOT EXISTS ux_users_cpf   ON users (cpf);
 ```
 
 ---
-## Why this is **SOLID**
-
-* **SRP (Single Responsibility Principle)**
-  Each class has a single reason to change:
-
-    * DTOs (transport shape), Controller (HTTP concerns),
-    * Use Case (business rule),
-    * Port (contract),
-    * Adapter (JPA details),
-    * Domain (invariants via value objects).
-
-* **DIP (Dependency Inversion Principle)**
-  The use case depends on the **`UserRepository` interface**, not on JPA. Infrastructure depends on the domain/application, never the other way.
-
-* **OCP (Open/Closed Principle)**
-  You can add a new persistence adapter (e.g., Redis, DynamoDB) **without** modifying the use case: implement the `UserRepository` port and wire it.
-
-* **ISP (Interface Segregation Principle)**
-  `UserRepository` exposes only what the use case needs (no leaking of JPA-specific APIs).
-
-* **LSP (Liskov Substitution Principle)**
-  Any adapter that implements `UserRepository` can replace another without breaking the service (same contract, same semantics).
-
----
-
 
 ## Clean Architecture Benefits Applied
 
