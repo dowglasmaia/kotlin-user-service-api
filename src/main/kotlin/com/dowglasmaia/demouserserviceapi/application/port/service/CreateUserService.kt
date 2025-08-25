@@ -29,7 +29,7 @@ class CreateUserService(
         )
 
         if (repository.existsByEmail(user.email.value)) throw EmailAlreadyUsedException(user.email.value)
-        if (repository.existsByEmail(user.cpf.digits)) throw CpfAlreadyUsedException(user.cpf.digits)
+        if (repository.existsByCpf(user.cpf.digits)) throw CpfAlreadyUsedException(user.cpf.digits)
 
         val userSaved = repository.save(user)
         return CreateUserDto(
